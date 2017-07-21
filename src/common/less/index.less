@@ -1,0 +1,84 @@
+// 依赖
+@import "./base.less";
+@import "./icon.less";
+@import "./mixin.less";
+
+// 公共样式
+.music-bar {
+  float: right;
+  color: #aaaaaa;
+  margin-bottom: 3.2rem;
+  .icon-fabu-bar, .icon-coll-c, .icon-write-bar {
+    .font-s(50);
+    vertical-align: middle;
+  }
+  .fabu-num {
+    .font-s(40);
+    .ml(10);
+    vertical-align: bottom;
+  }
+  .mask {
+    display: inline-block;
+    .height-h(30);
+    .light-h(30);
+    .marauto(0, 20, 0, 20);
+    vertical-align: middle;
+  }
+}
+
+.cur-color {
+  color: #161619;
+}
+
+.ori-title {
+  .mb(96);
+  .font-s(40);
+  color: #aaaaaa;
+  text-align: center;
+}
+
+.text-sty {
+  .font-s(48);
+  .light-h(80);
+  color: #5D5D5D;
+  text-indent: 2rem;
+}
+
+.indent-sty {
+  .marauto(0, 58, 0, 58);
+}
+
+.story-text{
+  .height-h(652);
+}
+
+.fabu-num{
+  .font-s(40);
+}
+
+// 头部样式
+.header {
+  width: 100%;
+  .height-h(132);
+  .light-h(132);
+  text-align: center;
+  background: #151519;
+  box-sizing: border-box;
+  position: relative;
+  .movie-code {
+    .bg-image {
+      .width-w(60);
+      .height-h(60);
+      background: url('../../../resource/img/code.png') no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      .left(58);
+      .top(36);
+    }
+  }
+  .movie-title {
+    .font-s(60);
+    flex: 1;
+    color: #FFF;
+  }
+}
