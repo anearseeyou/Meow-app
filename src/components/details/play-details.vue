@@ -1,9 +1,9 @@
 <template>
     <div class="play-details">
         <!-- 头部 -->
-        <div class="header">
+        <div v-if="pageData.lineData.movieInfo" class="header">
             <div class="movie-code"><a class="bg-image"></a></div>
-            <div class="movie-title">玉子</div>
+            <div class="movie-title">{{ pageData.lineData.movieInfo[1].name }}</div>
             <div class="music-share"><a class="write-img"></a></div>
         </div>
         <!-- 歌词展示 -->
@@ -17,7 +17,7 @@
         </div>
         <!-- 歌词导航 -->
         <div class="lines-tab indent-sty">
-            <div class="lines-text">电影歌词</div>
+            <div class="lines-text"><span class="line-title">电影歌词</span></div>
             <div class="lines-movie">
                 <span class="line2-c"></span>
             </div>
@@ -28,17 +28,71 @@
         <!-- 胶片背景 -->
         <div class="film-bg"></div>
         <!-- 歌词 -->
-        <div class="sing-lines indent-sty text-sty">
-            <p>idal waves don't beg forgiveness
-                father, he enjoyed collisions
-                the snowflake falls in may
-                as the bells are ringing out
-                cuz the man of the hour
-                nature has its own religion
-                father ruled by long division
-                and the sky breaks at dawn
-                we all come 'round
-                and the road, the old men paved</p>
+        <div v-if="pageData.lineData.movieInfo" class="sing-lines indent-sty text-sty">
+            <p class="sing-text">{{ pageData.lineData.movieInfo[1].singLines }}</p>
+        </div>
+        <!-- 胶片背景 -->
+        <div class="film-bg"></div>
+        <div class="lines-tab indent-sty">
+            <div class="lines-text ">
+                <div class="clearfix ratings-title">
+                    <span class="icon-rat-bar fl"></span>
+                    <span class="line-title rat-list fl ">评论列表</span>
+                </div>
+                <div>
+                    <div v-if="pageData.lineData.userInfo" class="user-u change-u clearfix">
+                        <div class="user-portrait fl"><img :src="pageData.lineData.userInfo[1].userPortrait" alt="">
+                        </div>
+                        <div class="user-info fl">
+                            <span class="user-name">{{ pageData.lineData.userInfo[1].username }}</span>
+                            <span class="rat-date">{{ pageData.lineData.userInfo[1].rateTime }}</span>
+                        </div>
+                    </div>
+                    <div v-if="pageData.lineData.userInfo" class="rat-text">
+                        <p class="text-sty change-sty">{{ pageData.lineData.userInfo[1].text }}</p>
+                        <div v-if="pageData.lineData.movieInfo" class="rat-bar fr clearfix">
+                            <span class="icon-fabu-c"><span class="path1"></span><span class="path2"></span></span>
+                            <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <div v-if="pageData.lineData.userInfo" class="user-u change-u clearfix">
+                        <div class="user-portrait fl"><img :src="pageData.lineData.userInfo[1].userPortrait" alt="">
+                        </div>
+                        <div class="user-info fl">
+                            <span class="user-name">{{ pageData.lineData.userInfo[1].username }}</span>
+                            <span class="rat-date">{{ pageData.lineData.userInfo[1].rateTime }}</span>
+                        </div>
+                    </div>
+                    <div v-if="pageData.lineData.userInfo" class="rat-text">
+                        <p class="text-sty change-sty">{{ pageData.lineData.userInfo[1].text }}</p>
+                    </div>
+                    <div v-if="pageData.lineData.movieInfo" class="rat-bar fr">
+                        <span class="icon-fabu-c"><span class="path1"></span><span class="path2"></span></span>
+                        <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
+                    </div>
+                </div>
+                <div>
+                    <div v-if="pageData.lineData.userInfo" class="user-u change-u clearfix">
+                        <div class="user-portrait fl"><img :src="pageData.lineData.userInfo[1].userPortrait" alt="">
+                        </div>
+                        <div class="user-info fl">
+                            <span class="user-name">{{ pageData.lineData.userInfo[1].username }}</span>
+                            <span class="rat-date">{{ pageData.lineData.userInfo[1].rateTime }}</span>
+                        </div>
+                    </div>
+                    <div v-if="pageData.lineData.userInfo" class="rat-text">
+                        <p class="text-sty change-sty">{{ pageData.lineData.userInfo[1].text }}</p>
+                    </div>
+                    <div v-if="pageData.lineData.movieInfo" class="rat-bar fr">
+                        <span class="icon-fabu-c"><span class="path1"></span><span class="path2"></span></span>
+                        <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -50,6 +104,32 @@
             detailPlay: {
                 type: Object
             }
+        },
+        data(){
+            return {
+                lines: {},
+                music: {},
+                pageData: {
+                    lineData: {},
+                    musicData: {},
+                    storyData: {},
+                    ratingData: {}
+                }
+            }
+        },
+        method: {
+            show(){
+                this.isShow = true;
+            }
+        },
+        created(){
+            this.$http.get('/api/lines').then((response) => {
+                response = response.body;
+                if (response) {
+                    this.pageData.lineData = response.data;
+                    console.log(this.pageData.lines);
+                }
+            });
         }
     }
 </script>
@@ -67,6 +147,8 @@
         bottom: 0;
         z-index: 10;
         background-color: #fff;
+        overflow-y: scroll;
+        overflow-x: hidden;
         .music-share {
             .write-img {
                 display: block;
@@ -75,7 +157,7 @@
                 .height-h(60);
                 .right(58);
                 .top(36);
-                background: url("write-nc.png") no-repeat;
+                background: url("img/write-nc.png") no-repeat;
                 background-size: 100% 100%;
             }
         }
@@ -122,6 +204,12 @@
                 flex: 8;
                 .font-s(60);
                 .pt(12);
+                .line-title {
+                    display: block;
+                    .width-w(150);
+                    .pb(10);
+                    border-bottom: 0.05rem solid #000;
+                }
             }
             .lines-movie {
                 flex: 1;
@@ -133,19 +221,32 @@
                     text-align: right;
                 }
                 .line2-c {
-                    background: url("line2-c.png") no-repeat;
+                    background: url("img/line2-c.png") no-repeat;
                     background-size: 100% 100%;
                 }
                 .line-story {
-                    background: url("lines-nc.png") no-repeat;
+                    background: url("img/lines-nc.png") no-repeat;
                     background-size: 100% 100%;
                 }
             }
         }
         .sing-lines {
-            .width-w(700);
-            margin: 0 auto;
             text-align: center;
+            overflow: hidden;
+            .mb(58);
+            height: auto;
+        }
+        .rat-list {
+            .ml(48);
+        }
+        .ratings-title {
+            .mb(58);
+        }
+        .change-sty {
+            text-indent: 0;
+        }
+        .change-u {
+            .mb(58);
         }
     }
 </style>

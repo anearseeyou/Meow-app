@@ -23,7 +23,7 @@
         <!-- 胶片背景 -->
         <div class="film-bg"></div>
         <!-- 用户评论 -->
-        <div  class="ratings-info indent-sty">
+        <div  class="ratings-list indent-sty">
             <div class="ori-title">- 影片短评 -</div>
             <div v-if="pageData.lineData.userInfo" class="user-u clearfix">
                 <div class="user-portrait fl"><img :src="pageData.lineData.userInfo[1].userPortrait" alt=""></div>
@@ -58,44 +58,12 @@
 
 <style lang="less" rel="stylesheet/less">
     @import "../../common/less/index";
+    // 评论信息
     .ratings-info {
         .mb(96);
         .user-u {
             .mb(58);
         }
-        .user-portrait {
-            .width-w(135);
-            .height-h(135);
-            & > img{
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-            }
-        }
-        .user-info {
-            .ml(40);
-            .mt(30);
-            .light-h(40);
-            color: #5D5D5D;
-            & > span {
-                display: block;
-            }
-            .user-name {
-                .font-s(50);
-            }
-            .rat-date {
-                .font-s(40);
-            }
-        }
-        .text-sty {
-            height: 18.8rem;
-        }
-        .icon-fabu-c {
-            .font-s(50);
-            .mr(10);
-        }
-        .rat-bar {
-            color: #161619;
-        }
+
     }
 </style>

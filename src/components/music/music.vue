@@ -10,7 +10,7 @@
                 <p class="music-singer">{{ pageData.lineData.movieInfo[0].singer }}</p>
                 <div class="music-rotate ">
                     <div class="music-circle"></div>
-                    <a @click="detailPlay(play , $event)" v-if="pageData.lineData.movieInfo" class="music-poster ">
+                    <a @click="detailPlay($event)" v-if="pageData.lineData.movieInfo" class="music-poster ">
                         <img :src="pageData.lineData.movieInfo[0].posterOne">
                         <div class="music-play"></div>
                     </a>
@@ -55,7 +55,7 @@
         </div>
 
         <!-- 详情页组件 -->
-        <play :lines="detailPlay"></play>
+        <play :lines="detailPlay" :ref=""></play>
     </div>
 </template>
 
@@ -74,11 +74,12 @@
             }
         },
         methods: {
-            detailPlay(play, event){
+            detailPlay(event){
                 if (!event._constructored) {
                     return
                 }
-                this.detailPlay = play;
+                //this.detailPlay = play
+                this.$refs.detailPlay.show();
             }
         },
         components: {
@@ -119,7 +120,7 @@
                 .music-circle {
                     width: 100%;
                     .height-h(380);
-                    background: url("music-rotate.png") no-repeat -10px 0;
+                    background: url("img/music-rotate.png") no-repeat -10px 0;
                     background-size: 18rem 18rem;
                     position: absolute;
                     left: 50%;
@@ -144,13 +145,13 @@
                     margin-top: -2.5rem;
                     .width-w(100);
                     .height-h(100);
-                    background: url("music-play.png") no-repeat;
+                    background: url("img/music-play.png") no-repeat;
                     background-size: 5rem 5rem;
                 }
                 .text-bg {
                     width: 3.7rem;
                     height: 19rem;
-                    background: url("text-bgc.png") no-repeat right center;
+                    background: url("img/text-bgc.png") no-repeat right center;
                     background-size: 3.7rem 15.1rem;
                     position: absolute;
                     right: 0;
