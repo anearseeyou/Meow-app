@@ -1,43 +1,30 @@
 <template>
     <div class="user-ratings">
         <!-- 胶片背景 -->
-        <div class="film-bg"></div>
-        <!-- 用户评论 -->
-        <div  class="ratings-info indent-sty">
-            <div class="ori-title">- 影片短评 -</div>
-            <div v-if="pageData.lineData.userInfo" class="user-u clearfix">
-                <div class="user-portrait fl"><img :src="pageData.lineData.userInfo[0].userPortrait" alt=""></div>
-                <div  class="user-info fl">
-                    <span  class="user-name">{{ pageData.lineData.userInfo[0].username }}</span>
-                    <span class="rat-date">{{ pageData.lineData.userInfo[0].rateTime }}</span>
+        <div v-for="(rat,index) in pageData.ratings">
+            <div class="film-bg"></div>
+            <!-- 用户评论 -->
+            <div class="ratings-info indent-sty">
+                <div class="ori-title">- 影片短评 -</div>
+                <div class="user-u clearfix">
+                    <div class="user-portrait fl"><img :src="rat.avatar" :alt="rat.username"></div>
+                    <div class="user-info fl">
+                        <span class="user-name">{{ rat.username }}</span>
+                        <span class="rat-date">{{ rat.rateTime }}</span>
+                    </div>
                 </div>
-            </div>
-            <div v-if="pageData.lineData.userInfo" class="rat-text">
-                <p class="text-sty">{{ pageData.lineData.userInfo[0].text }}</p>
-            </div>
-            <div v-if="pageData.lineData.movieInfo" class="rat-bar fr">
-                <span class="icon-fabu-c"><span class="path1"></span><span class="path2"></span></span>
-                <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
-            </div>
-        </div>
-        <!-- 胶片背景 -->
-        <div class="film-bg"></div>
-        <!-- 用户评论 -->
-        <div  class="ratings-list indent-sty">
-            <div class="ori-title">- 影片短评 -</div>
-            <div v-if="pageData.lineData.userInfo" class="user-u clearfix">
-                <div class="user-portrait fl"><img :src="pageData.lineData.userInfo[1].userPortrait" alt=""></div>
-                <div  class="user-info fl">
-                    <span  class="user-name">{{ pageData.lineData.userInfo[1].username }}</span>
-                    <span class="rat-date">{{ pageData.lineData.userInfo[1].rateTime }}</span>
+                <div class="rat-text">
+                    <p class="text-sty">{{ rat.content }}</p>
                 </div>
-            </div>
-            <div v-if="pageData.lineData.userInfo" class="rat-text">
-                <p class="text-sty">{{ pageData.lineData.userInfo[1].text }}</p>
-            </div>
-            <div v-if="pageData.lineData.movieInfo" class="rat-bar fr">
-                <span class="icon-fabu-c"><span class="path1"></span><span class="path2"></span></span>
-                <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
+                <div class="rat-bar clearfix">
+                    <div class="fr">
+                        <span class="icon-fabu-c">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </span>
+                        <span class="fabu-num">{{ rat.thumbs }}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -46,9 +33,6 @@
 <script type="text/ecmascript-6">
     export default{
         props: {
-            lines: {
-                type: true
-            },
             pageData: {
                 type: Object
             }
@@ -60,10 +44,9 @@
     @import "../../common/less/index";
     // 评论信息
     .ratings-info {
-        .mb(96);
+        .mb(58);
         .user-u {
             .mb(58);
         }
-
     }
 </style>

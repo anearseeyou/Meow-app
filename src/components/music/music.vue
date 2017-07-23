@@ -1,89 +1,63 @@
 <template>
     <div class="ori-movie">
-        <!-- 胶片背景 -->
-        <div class="film-bg"></div>
         <!-- 原声音乐 -->
-        <div class="ori-music">
-            <div class="ori-title">- 电影原声 -</div>
-            <div v-if="pageData.lineData.movieInfo" class="music-info">
-                <p class="music-title">{{ pageData.lineData.movieInfo[0].name }}</p>
-                <p class="music-singer">{{ pageData.lineData.movieInfo[0].singer }}</p>
-                <div class="music-rotate ">
-                    <div class="music-circle"></div>
-                    <a @click="detailPlay($event)" v-if="pageData.lineData.movieInfo" class="music-poster ">
-                        <img :src="pageData.lineData.movieInfo[0].posterOne">
-                        <div class="music-play"></div>
-                    </a>
-                    <div class="text-bg clearfix"></div>
-                </div>
-                <div class="music-bar">
-                    <span class="icon-fabu-bar"></span>
-                    <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
-                    <span class="mask">-</span>
-                    <span class="icon-coll-c cur-color"></span>
-                    <span class="mask">-</span>
-                    <span class="icon-write-bar"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 胶片背景 -->
-        <div class="film-bg"></div>
-        <!-- 原声音乐 -->
-        <div class="ori-music">
-            <div class="ori-title">- 电影原声 -</div>
-            <div v-if="pageData.lineData.movieInfo" class="music-info">
-                <p class="music-title">{{ pageData.lineData.movieInfo[0].singName }}</p>
-                <p class="music-singer">{{ pageData.lineData.movieInfo[0].singer }}</p>
-                <div class="music-rotate ">
-                    <div class="music-circle"></div>
-                    <div v-if="pageData.lineData.movieInfo" class="music-poster ">
-                        <img :src="pageData.lineData.movieInfo[0].posterTwo">
-                        <div class="music-play"></div>
+        <div class="ori-music" v-for="(music,index) in pageData.music">
+            <!-- 胶片背景 -->
+            <div class="film-bg"></div>
+            <div class="movie-music">
+                <div class="ori-title">- 电影原声 -</div>
+                <div class="music-info">
+                    <p class="music-title">{{ music.name }}</p>
+                    <p class="music-singer">{{ music.singer }}</p>
+                    <div class="music-rotate ">
+                        <div class="music-circle"></div>
+                        <a @click="goPlay($event,music)" class="music-poster ">
+                            <img :src="music.poster">
+                            <div class="music-play"></div>
+                        </a>
+                        <div class="text-bg clearfix"></div>
                     </div>
-                    <div class="text-bg clearfix"></div>
-                </div>
-                <div class="music-bar">
-                    <span class="icon-fabu-bar"></span>
-                    <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
-                    <span class="mask">-</span>
-                    <span class="icon-coll-c cur-color"></span>
-                    <span class="mask">-</span>
-                    <span class="icon-write-bar"></span>
+                    <div class="music-bar">
+                        <span class="icon-fabu-bar"></span>
+                        <span class="fabu-num">{{music.thumbs }}</span>
+                        <span class="mask">-</span>
+                        <span class="icon-coll-c cur-color"></span>
+                        <span class="mask">-</span>
+                        <span class="icon-write-bar"></span>
+                    </div>
                 </div>
             </div>
         </div>
-
         <!-- 详情页组件 -->
-        <play :lines="detailPlay" :ref=""></play>
+        <v-play :music="music" :showplay="showplay" ref="playelem"></v-play>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import play from  '../details/play-details.vue'
     export default{
+        data(){
+            return {
+                music: {},
+                showplay: false
+            }
+        },
         props: {
-            lines: {
-                type: Object
-            },
-            music: {
-                type: Object
-            },
             pageData: {
                 type: Object
             }
         },
         methods: {
-            detailPlay(event){
-                if (!event._constructored) {
+            goPlay(event, music){
+                if (event._constructored) {
                     return
                 }
-                //this.detailPlay = play
-                this.$refs.detailPlay.show();
+                this.music = music;
+                this.showplay = true;
             }
         },
         components: {
-            play
+            "v-play": play
         }
     };
 </script>
@@ -92,7 +66,9 @@
     @import "../../common/less/index";
 
     .ori-music {
-        .padauto(0, 58, 200, 58);
+        .movie-music {
+            .padauto(0, 58, 200, 58);
+        }
         text-align: center;
         position: relative;
         .film-pos {

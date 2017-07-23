@@ -1,22 +1,24 @@
 <template>
-    <div class="play-details">
+    <div class="play-details" ref="playWrapper" v-show="showplay">
         <!-- 头部 -->
-        <div v-if="pageData.lineData.movieInfo" class="header">
-            <div class="movie-code"><a class="bg-image"></a></div>
-            <div class="movie-title">{{ pageData.lineData.movieInfo[1].name }}</div>
-            <div class="music-share"><a class="write-img"></a></div>
+        <div v-if="music" class="backHome">
+            <div class="back-btn"><a class="icon-back-bar"></a></div>
+            <div class="play-title">{{ music.name }}</div>
+            <div class="write-btn"><a class="icon-write-bar"></a></div>
         </div>
-        <!-- 歌词展示 -->
+
+        <!-- 歌词海报 -->
         <div class="play-video">
-            <video class="lines-poster" poster="../../../static/img/lines-poster.png"></video>
+            <video class="lines-poster" :poster="music.lyricPoster"></video>
             <div class="control clearfix">
                 <span class="fl">01:00</span>
                 <span class="fl ctrl-bar"><i class="mask-bar"></i></span>
                 <span class="fr">04:22</span>
             </div>
         </div>
+
         <!-- 歌词导航 -->
-        <div class="lines-tab indent-sty">
+        <div class="lines-tab indent-sty change-mb">
             <div class="lines-text"><span class="line-title">电影歌词</span></div>
             <div class="lines-movie">
                 <span class="line2-c"></span>
@@ -25,12 +27,15 @@
                 <span class="line-story"></span>
             </div>
         </div>
+
         <!-- 胶片背景 -->
         <div class="film-bg"></div>
-        <!-- 歌词 -->
-        <div v-if="pageData.lineData.movieInfo" class="sing-lines indent-sty text-sty">
-            <p class="sing-text">{{ pageData.lineData.movieInfo[1].singLines }}</p>
+
+        <!-- 歌词内容 -->
+        <div v-if="music" class="sing-lines indent-sty text-sty">
+            <p class="sing-text">{{ music.lyric }}</p>
         </div>
+
         <!-- 胶片背景 -->
         <div class="film-bg"></div>
         <div class="lines-tab indent-sty">
@@ -39,98 +44,77 @@
                     <span class="icon-rat-bar fl"></span>
                     <span class="line-title rat-list fl ">评论列表</span>
                 </div>
-                <div>
-                    <div v-if="pageData.lineData.userInfo" class="user-u change-u clearfix">
-                        <div class="user-portrait fl"><img :src="pageData.lineData.userInfo[1].userPortrait" alt="">
+                <!-- 评论列表页 -->
+                <div v-for="(rat,index) in music.ratings" class="ratings-list">
+                    <div class="user-u change-u clearfix">
+                        <div class="user-portrait fl"><img :src="rat.avatar" alt="rat.username">
                         </div>
                         <div class="user-info fl">
-                            <span class="user-name">{{ pageData.lineData.userInfo[1].username }}</span>
-                            <span class="rat-date">{{ pageData.lineData.userInfo[1].rateTime }}</span>
+                            <span class="user-name">{{ rat.username }}</span>
+                            <span class="rat-date">{{ rat.rateTime }}</span>
                         </div>
                     </div>
-                    <div v-if="pageData.lineData.userInfo" class="rat-text">
-                        <p class="text-sty change-sty">{{ pageData.lineData.userInfo[1].text }}</p>
-                        <div v-if="pageData.lineData.movieInfo" class="rat-bar fr clearfix">
-                            <span class="icon-fabu-c"><span class="path1"></span><span class="path2"></span></span>
-                            <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
+                    <div class="rat-text">
+                        <p class="text-sty change-sty">{{ rat.content }}</p>
+                    </div>
+                    <div class="rat-bar clearfix">
+                        <div class="fr">
+                            <span class="icon-fabu-c">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </span>
+                            <span class="fabu-num">{{ rat.thumbs }}</span>
                         </div>
-                    </div>
-
-                </div>
-                <div>
-                    <div v-if="pageData.lineData.userInfo" class="user-u change-u clearfix">
-                        <div class="user-portrait fl"><img :src="pageData.lineData.userInfo[1].userPortrait" alt="">
-                        </div>
-                        <div class="user-info fl">
-                            <span class="user-name">{{ pageData.lineData.userInfo[1].username }}</span>
-                            <span class="rat-date">{{ pageData.lineData.userInfo[1].rateTime }}</span>
-                        </div>
-                    </div>
-                    <div v-if="pageData.lineData.userInfo" class="rat-text">
-                        <p class="text-sty change-sty">{{ pageData.lineData.userInfo[1].text }}</p>
-                    </div>
-                    <div v-if="pageData.lineData.movieInfo" class="rat-bar fr">
-                        <span class="icon-fabu-c"><span class="path1"></span><span class="path2"></span></span>
-                        <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
-                    </div>
-                </div>
-                <div>
-                    <div v-if="pageData.lineData.userInfo" class="user-u change-u clearfix">
-                        <div class="user-portrait fl"><img :src="pageData.lineData.userInfo[1].userPortrait" alt="">
-                        </div>
-                        <div class="user-info fl">
-                            <span class="user-name">{{ pageData.lineData.userInfo[1].username }}</span>
-                            <span class="rat-date">{{ pageData.lineData.userInfo[1].rateTime }}</span>
-                        </div>
-                    </div>
-                    <div v-if="pageData.lineData.userInfo" class="rat-text">
-                        <p class="text-sty change-sty">{{ pageData.lineData.userInfo[1].text }}</p>
-                    </div>
-                    <div v-if="pageData.lineData.movieInfo" class="rat-bar fr">
-                        <span class="icon-fabu-c"><span class="path1"></span><span class="path2"></span></span>
-                        <span class="fabu-num">{{ pageData.lineData.movieInfo[0].fabulous }}</span>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <!-- 底部固定 -->
+        <div v-if="music" class="rat-footer">
+            <div class="rat-left">
+                <span class="left-bar icon-coll-bar"></span>
+                <span class="left-bar icon-fabu-bar"></span>
+                <span class="left-bar icon-write-bar"></span>
+            </div>
+            <div class="rat-middle"></div>
+            <div class="rat-right">
+                <span class="right-bar">52赞</span>
+                <span class="right-bar">12评论</span>
+            </div>
         </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import BScorll from "better-scroll";
+    import Vue from 'vue'
     export default{
         props: {
-            detailPlay: {
-                type: Object
-            }
+            music: {},
+            showplay: false
         },
-        data(){
-            return {
-                lines: {},
-                music: {},
-                pageData: {
-                    lineData: {},
-                    musicData: {},
-                    storyData: {},
-                    ratingData: {}
-                }
+        watch: {
+            showplay: function () {
+                this.$nextTick(() => {
+                    if (this.playWrapper) {
+                        this._initScroll();
+                    }
+                });
             }
         },
         method: {
-            show(){
-                this.isShow = true;
-            }
-        },
-        created(){
-            this.$http.get('/api/lines').then((response) => {
-                response = response.body;
-                if (response) {
-                    this.pageData.lineData = response.data;
-                    console.log(this.pageData.lines);
+            _initScroll() {
+                if (!this.playWrapper) {
+                    this.playWrapper = new BScroll(this.$refs.playWrapper, {
+                        click: true
+                    });
+                } else {
+                    this.playWrapper.refresh()
                 }
-            });
+            }
         }
+
     }
 </script>
 
@@ -138,17 +122,68 @@
 
     @import "../../common/less/index";
 
+    // 公共样式
+    .icon-back-bar, .icon-write-bar {
+        .font-s(80);
+        vertical-align: middle;
+    }
+
+    .play-title {
+        .font-s(60);
+    }
+
+    .ratings-list {
+        .mb(58);
+        .pb(58);
+        position: relative;
+        &:after{
+            content: '';
+            display: block;
+            width: 130%;
+            .height-h(2);
+            background: #ededed;
+            position: absolute;
+            left:0;
+            bottom: 0;
+        }
+    }
+
+    // 头部固定
+    .backHome {
+        width: 100%;
+        .height-h(132);
+        .light-h(132);
+        text-align: center;
+        background: #151519;
+        box-sizing: border-box;
+        position: relative;
+        color: #ffffff;
+        .back-btn, .write-btn {
+            position: absolute;
+            top: 0;
+        }
+        .back-btn {
+            .left(40);
+        }
+        .write-btn {
+            .right(58);
+        }
+    }
+
+    // 详情页
     .play-details {
         width: 100%;
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        bottom: 0;
+        .bottom(148);
         z-index: 10;
         background-color: #fff;
-        overflow-y: scroll;
         overflow-x: hidden;
+        .change-mb {
+            .mb(58);
+        }
         .music-share {
             .write-img {
                 display: block;
@@ -199,7 +234,6 @@
         }
         .lines-tab {
             display: flex;
-            .mb(58);
             .lines-text {
                 flex: 8;
                 .font-s(60);
@@ -207,7 +241,7 @@
                 .line-title {
                     display: block;
                     .width-w(150);
-                    .pb(10);
+                    .pb(6);
                     border-bottom: 0.05rem solid #000;
                 }
             }
@@ -247,6 +281,52 @@
         }
         .change-u {
             .mb(58);
+        }
+    }
+
+    // 底部固定
+    .rat-footer {
+        .height-h(148);
+        width: 100%;
+        display: flex;
+        background: #e0e0e0;
+        background: #FFF;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        border-top: 0.05rem solid #ededed;
+        box-shadow: 0 2rem 5rem rgba(17, 17, 57, 0.2);
+        .rat-left {
+            flex: 5;
+            display: flex;
+        }
+        .rat-middle {
+            flex: 1;
+        }
+        .rat-right {
+            .font-s(40);
+            flex: 4;
+            display: flex;
+            color: #aaaaaa;
+        }
+        .right-bar, .left-bar {
+            .mt(60);
+            flex: 1;
+            display: block;
+            font-weight: normal;
+        }
+        .left-bar {
+            .font-s(50);
+            text-align: left;
+            &:first-child {
+                .pl(58);
+            }
+        }
+        .right-bar {
+            text-align: right;
+            &:last-child {
+                .pr(58);
+            }
         }
     }
 </style>

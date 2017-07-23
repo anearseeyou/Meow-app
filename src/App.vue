@@ -1,18 +1,18 @@
 <template>
     <div id="app">
         <!-- 头部 -->
-        <v-header :pageData="pageData"></v-header>
+        <v-header :pageData="pageData.movie"></v-header>
         <!-- 海报 -->
         <div class="banner">
-            <img class="banner-poster" v-if="pageData.lineData.movieInfo" :src="pageData.lineData.movieInfo[0].pic">
+            <img class="banner-poster" v-if="pageData.movie" :src="pageData.movie.poster">
         </div>
         <!-- 海报信息 -->
-        <div v-if="pageData.lineData.movieInfo" class="banner-info">
+        <div v-if="pageData.movie" class="banner-info">
             <span class="deliveryTime">
-                上映时间：{{ pageData.lineData.movieInfo[0].deliveryTime }}
+                上映时间：{{pageData.movie.release}}
             </span>
             <span class="score">
-                豆瓣评分：{{ pageData.lineData.movieInfo[0].score }}
+                豆瓣评分：{{pageData.movie.score }}
             </span>
         </div>
         <!-- 导航 -->
@@ -52,40 +52,14 @@
     export default {
         data(){
             return {
-                lines: {},
-                music: {},
-                pageData: {
-                    lineData: {},
-                    musicData: {},
-                    storyData: {},
-                    ratingData: {}
-                }
+                pageData: {},
             }
         },
         created(){
-            this.$http.get('/api/lines').then((response) => {
+            this.$http.get('/api/data').then((response) => {
                 response = response.body;
                 if (response) {
-                    this.pageData.lineData = response.data;
-                    console.log(this.pageData.lines);
-                }
-            });
-            this.$http.get('/api/music').then((response) => {
-                response = response.body;
-                if (response) {
-                    this.pageData.musicData = response.data;
-                }
-            });
-            this.$http.get('/api/storys').then((response) => {
-                response = response.body;
-                if (response) {
-                    this.pageData.storyData = response.data;
-                }
-            });
-            this.$http.get('/api/ratings').then((response) => {
-                response = response.body;
-                if (response) {
-                    this.pageData.ratingData = response.data;
+                    this.pageData = response.data;
                 }
             });
         },

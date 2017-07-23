@@ -5,7 +5,7 @@
         </div>
         <div v-for="(line,index) in nameList" :class="line.navClass">
             <router-link :to="line.url">
-                <span :class="line.icons[1]" @click="changeC($event)"></span>
+                <span :class="line.icons[1]" @click="changeC(index)"></span>
             </router-link>
         </div>
 
@@ -56,29 +56,7 @@
         },
         methods: {
             changeC(currentIndex) {
-
-//                event.currentTarget.setAttribute('class',this.nameList[0].icons[0]);
-                 /*console.log(event.currentTarget.className);
-                 let currentClassName = event.currentTarget.className;
-                 if(currentClassName){
-
-                 }*/
-                /*let currentIndex = event.currentTarget;
-                 console.log(currentIndex);*/
-                //之前的还原
-                /*
-                 let tempClass = this.nameList[this.navIndex].icons[0];
-                 this.nameList[this.navIndex].icons[0] = this.nameList[this.navIndex].icons[1];
-                 this.nameList[this.navIndex].icons[1] = tempClass;
-                 this.$set(this.nameList, this.navIndex, this.nameList[this.navIndex]);
-
-                 //让当前的高亮
-                 let currClass = this.nameList[nindex].icons[0];
-                 this.nameList[nindex].icons[0] = this.nameList[nindex].icons[1];
-                 this.nameList[nindex].icons[1] = currClass;
-                 this.$set(this.nameList, nindex, this.nameList[nindex]);
-                 this.navIndex = nindex;
-                 */
+                this.navIndex = currentIndex;
             }
         }
     }
@@ -125,7 +103,7 @@
             width: 100%;
             background-color: #1F253D;
             position: absolute;
-            bottom: -0.5rem;
+            bottom: -0.3rem;
             left: 0;
         }
 

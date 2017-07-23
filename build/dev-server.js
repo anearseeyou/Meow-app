@@ -21,36 +21,17 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
-var appData = require('../data.json');
-var music = appData.music;
-var lines = appData.lines;
-var storys = appData.storys;
-var ratings = appData.ratings;
+var dataJson = require('../data.json');
+var pageData = dataJson[0];
 var apiRoutes = express.Router();
-apiRoutes.get('/music', function (req, res) {
+
+apiRoutes.get('/data', function (req, res) {
     res.json({
         errno: 0,
-        data: music
+        data: pageData
     });
 });
-apiRoutes.get('/lines', function (req, res) {
-    res.json({
-        errno: 0,
-        data: lines
-    });
-});
-apiRoutes.get('/storys', function (req, res) {
-    res.json({
-        errno: 0,
-        data: storys
-    });
-});
-apiRoutes.get('/ratings', function (req, res) {
-    res.json({
-        errno: 0,
-        data: ratings
-    });
-});
+
 app.use('/api', apiRoutes);
 
 var compiler = webpack(webpackConfig)
