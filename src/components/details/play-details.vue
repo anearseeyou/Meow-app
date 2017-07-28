@@ -1,10 +1,10 @@
 <template>
-    <div class="play-details" ref="playWrapper" v-show="showplay">
+    <div class="play-details" ref="playWrapper" v-show="showplay" transition="move-transition">
         <!-- 头部 -->
         <div v-if="music" class="backHome">
-            <div class="back-btn"><a class="icon-back-bar"></a></div>
+            <div class="back-btn"><a class="back-bg"></a></div>
             <div class="play-title">{{ music.name }}</div>
-            <div class="write-btn"><a class="icon-write-bar"></a></div>
+            <div class="write-btn"><a class="write-bg"></a></div>
         </div>
 
         <!-- 歌词海报 -->
@@ -17,8 +17,9 @@
             </div>
         </div>
 
+
         <!-- 歌词导航 -->
-        <div class="lines-tab indent-sty change-mb">
+        <div class="lines-tab indent-sty">
             <div class="lines-text"><span class="line-title">电影歌词</span></div>
             <div class="lines-movie">
                 <span class="line2-c"></span>
@@ -87,11 +88,12 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import detaulNav from '../detail-nav/detail-nav.vue';
     import BScorll from "better-scroll";
-    import Vue from 'vue'
     export default{
         props: {
             music: {},
+            pageData: {},
             showplay: false
         },
         watch: {
@@ -113,20 +115,48 @@
                     this.playWrapper.refresh()
                 }
             }
-        }
-
+        },
     }
 </script>
+
+<!--
+
+<script type="text/ecmascript-6">
+    import BScorll from "better-scroll";
+    import Vue from 'vue'
+    export default{
+        props: {
+            music: {},
+            showplay: false
+        },
+        watch: {
+            showplay: function (status) {
+                this.showplay = status;
+                if (status) {
+                    this.$nextTick(() => {
+                        if (!this.playWrapper) {
+                            this.playWrapper = new BScroll(this.$refs.playWrapper, {
+                                click: true
+                            });
+                        } else {
+                            this.playWrapper.refresh()
+                        }
+                    });
+                }
+            }
+        },
+        methods: {
+            closePlay(){
+                this.$emit("close");
+            }
+        }
+    }
+</script>
+-->
 
 <style lang="less" rel="stylesheet/less">
 
     @import "../../common/less/index";
-
-    // 公共样式
-    .icon-back-bar, .icon-write-bar {
-        .font-s(80);
-        vertical-align: middle;
-    }
 
     .play-title {
         .font-s(60);
@@ -136,15 +166,56 @@
         .mb(58);
         .pb(58);
         position: relative;
-        &:after{
+        &:after {
             content: '';
             display: block;
             width: 130%;
             .height-h(2);
             background: #ededed;
             position: absolute;
-            left:0;
+            left: 0;
             bottom: 0;
+        }
+    }
+
+    .lines-tab {
+        display: flex;
+        .marauto(94, 58, 0, 58);
+        .lines-text {
+            flex: 8;
+            .font-s(60);
+            .pt(12);
+            .line-title {
+                position: relative;
+                &:after {
+                    content: ' ';
+                    display: block;
+                    height: 0.1rem;
+                    width: 100%;
+                    background-color: #1F253D;
+                    position: absolute;
+                    bottom: -0.3rem;
+                    left: 0;
+                }
+            }
+        }
+        .lines-movie {
+            flex: 1;
+            .line2-c, .line-story {
+                display: block;
+                .width-w(50);
+                .height-h(50);
+                .ml(40);
+                text-align: right;
+            }
+            .line2-c {
+                background: url("img/line2-nc.png") no-repeat;
+                background-size: 100% 100%;
+            }
+            .line-story {
+                background: url("img/lines-nc.png") no-repeat;
+                background-size: 100% 100%;
+            }
         }
     }
 
@@ -181,6 +252,13 @@
         z-index: 10;
         background-color: #fff;
         overflow-x: hidden;
+        &.move-transition {
+            transition: all 0.2s linear;
+            transform: translate3d(0, 0, 0);
+        }
+        &.mover-enter, .mover-leave {
+            transform: translate3d(100%, 0, 0);
+        }
         .change-mb {
             .mb(58);
         }
@@ -232,55 +310,23 @@
                 }
             }
         }
-        .lines-tab {
-            display: flex;
-            .lines-text {
-                flex: 8;
-                .font-s(60);
-                .pt(12);
-                .line-title {
-                    display: block;
-                    .width-w(150);
-                    .pb(6);
-                    border-bottom: 0.05rem solid #000;
-                }
-            }
-            .lines-movie {
-                flex: 1;
-                .line2-c, .line-story {
-                    display: block;
-                    .width-w(50);
-                    .height-h(50);
-                    .ml(40);
-                    text-align: right;
-                }
-                .line2-c {
-                    background: url("img/line2-c.png") no-repeat;
-                    background-size: 100% 100%;
-                }
-                .line-story {
-                    background: url("img/lines-nc.png") no-repeat;
-                    background-size: 100% 100%;
-                }
-            }
-        }
         .sing-lines {
             text-align: center;
             overflow: hidden;
-            .mb(58);
+            .mb(94);
             height: auto;
         }
         .rat-list {
             .ml(48);
         }
         .ratings-title {
-            .mb(58);
+            .mb(94);
         }
         .change-sty {
             text-indent: 0;
         }
-        .change-u {
-            .mb(58);
+        .rat-bar, .change-u, .change-sty {
+            .mb(66);
         }
     }
 
@@ -296,6 +342,7 @@
         left: 0;
         border-top: 0.05rem solid #ededed;
         box-shadow: 0 2rem 5rem rgba(17, 17, 57, 0.2);
+        z-index: 11;
         .rat-left {
             flex: 5;
             display: flex;
@@ -328,5 +375,19 @@
                 .pr(58);
             }
         }
+    }
+
+    .write-bg {
+        display: block;
+        .width-w(60);
+        .height-h(60);
+    }
+
+    .back-bg {
+        display: block;
+        .width-w(35);
+        .height-h(60);
+        background: url("img/back@2x.png") no-repeat;
+        background-size: 100% 100%;
     }
 </style>

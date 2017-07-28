@@ -8,7 +8,6 @@
                 <span :class="line.icons[1]" @click="changeC(index)"></span>
             </router-link>
         </div>
-
     </div>
 </template>
 <script>
@@ -18,7 +17,7 @@
             return {
                 nameList: [
                     {
-                        "name": "原声影院",
+                        "name": "原声音乐",
                         "navClass": "nav-item",
                         "iconClass": "icon-music-bar",
                         "icons": ["icon-music-c", "icon-music-bar"],
@@ -47,11 +46,6 @@
                     }
                 ],
                 navIndex: 0
-            }
-        },
-        props: {
-            navId: {
-                type: Number
             }
         },
         methods: {

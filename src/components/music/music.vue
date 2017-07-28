@@ -11,7 +11,7 @@
                     <p class="music-singer">{{ music.singer }}</p>
                     <div class="music-rotate ">
                         <div class="music-circle"></div>
-                        <a @click="goPlay($event,music)" class="music-poster ">
+                        <a @click="goPlay($event,music)" class="music-poster">
                             <img :src="music.poster">
                             <div class="music-play"></div>
                         </a>
@@ -29,7 +29,7 @@
             </div>
         </div>
         <!-- 详情页组件 -->
-        <v-play :music="music" :showplay="showplay" ref="playelem"></v-play>
+        <v-play :music="music" :showplay="showplay"></v-play>
     </div>
 </template>
 
@@ -54,6 +54,44 @@
                 }
                 this.music = music;
                 this.showplay = true;
+            },
+            open(){
+                window.open();
+                this.$router.push({path: 'music/playDeatils'});
+            }
+        },
+        components: {
+            "v-play": play,
+        }
+    };
+</script>
+
+<!--
+
+<script type="text/ecmascript-6">
+    import play from  '../details/play-details.vue'
+    export default{
+        data(){
+            return {
+                music: {},
+                showplay: false
+            }
+        },
+        props: {
+            pageData: {
+                type: Object
+            }
+        },
+        methods: {
+            goPlay(event, music){
+                if (event._constructored) {
+                    return
+                }
+                this.music = music;
+                this.showplay = true;
+            },
+            closePlay() {
+                this.showplay = false;
             }
         },
         components: {
@@ -61,6 +99,7 @@
         }
     };
 </script>
+-->
 
 <style lang="less" rel="stylesheet/less">
     @import "../../common/less/index";
@@ -136,4 +175,5 @@
             }
         }
     }
+
 </style>

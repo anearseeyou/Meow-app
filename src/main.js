@@ -3,6 +3,7 @@ import Vue from 'vue';
 import App from './App';
 import router from './router/index.js';
 import VueResource from 'vue-resource';
+
 import './javascript/fontSize'
 // 全局Less样式
 import './common/less/index.less'
